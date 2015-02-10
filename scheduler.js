@@ -19,13 +19,13 @@ function flipRoute() {
 }
 function thisDay(day) {
 	$('#dayTabs div').removeClass('selectedDay');
-	if (day == 'Weekday' || day=='Monday' || day=='Tuesday' || day=='Wednesday' || day=='Thursday' || day=='Friday') {
+	if (day == Weekday || day=='Monday' || day=='Tuesday' || day=='Wednesday' || day=='Thursday' || day=='Friday') {
 		service_id = 1;
 		$('#Weekday').addClass('selectedDay');
-	} else if (day == 'Saturday') {
+	} else if (day == Saturday || day == 'Saturday') {
 		service_id = 2;
 		$('#Saturday').addClass('selectedDay');
-	} else if (day == 'Sunday') {
+	} else if (day == Sunday || day == 'Sunday') {
 		service_id = 3;
 		$('#Sunday').addClass('selectedDay');
 	}
