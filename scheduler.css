@@ -161,3 +161,7 @@ select#stopListStart, select#stopListEnd {
 #customizeRoute h4 {
 	color: #238;
 }
+a {
+	text-decoration: none;
+	color: blue;
+}
