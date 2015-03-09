@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge;" />
+		<title>Scheduling App</title>
+		<link rel="stylesheet" type="text/css" href="jquery-ui.min.css">
+		<link rel="stylesheet" type="text/css" href="scheduler.css">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+		<script type="text/javascript" src="scheduler.js"></script>
+		<script type="text/javascript" src="routes.json"></script>
+		<script type="text/javascript" src="calendar.json"></script>
+		<script type="text/javascript" src="calendar_dates.json"></script>
+		<script type="text/javascript" src="stops.json"></script>
+		<script type="text/javascript" src="trips.json"></script>
+		<script type="text/javascript" src="stop_times.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+		<script type="text/javascript" src="jquery-ui.min.js"></script>
+	</head>
+	<body>
+		<div class="container-fluid">
+			<div id="left-bar" class="col-lg-2">
+				<div id="side-nav">
+					<ul>
+						<li id="side-header">Fixed Route</li>
+						<li class="selectedTab">Routes</li>
+						<a href="index.html"><li>Schedules</li></a>
+						<a href="map.html"><li>Maps</li></a>
+						<a href="stops.html"><li>Bus Stops</li></a>
+					</ul>
+				</div>
+			</div>
+			<div id="middle" class="col-lg-8">
+				<h1>Schedules By Route</h1>
+				<div class="col-md-6">
+					<ul id="routesList1"></ul>
+				</div>
+				<div class="col-md-6">
+					<ul id="routesList2"></ul>
+				</div>
+			</div>
+			<div id="right-bar" class="col-lg-2">
+			</div>
+		</div>
+		<script type="text/javascript">
+		window.onload = function fillRoutes() {
+			var option1 = '';
+			var option2 = '';
+			var splitLength = routes.length/2;
+			var splitCounter = 0;
+			for (i=0;i<routes.length;i++){
+				splitCounter++;
+				if (splitCounter<=splitLength) {
+					option1 += '<li><strong>'+routes[i].route_short_name+' </strong><a class="route" href="index.html?'+routes[i].route_id+'"> '+routes[i].route_long_name+'</a></li>';
+				} else {
+					option2 += '<li><strong>'+routes[i].route_short_name+' </strong><a class="route" href="index.html?'+routes[i].route_id+'"> '+routes[i].route_long_name+'</a></li>';
+				}
+			}
+			$('#routesList1').append(option1);
+			$('#routesList2').append(option2);
+		}
+		</script>
+	</body>
+</html>

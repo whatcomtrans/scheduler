@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge;" />
 		<title>Scheduling App</title>
 		<link rel="stylesheet" type="text/css" href="jquery-ui.min.css">
 		<link rel="stylesheet" type="text/css" href="scheduler.css">
@@ -21,9 +23,10 @@
 				<div id="side-nav">
 					<ul>
 						<li id="side-header">Fixed Route</li>
+						<a href="routes.html"><li>Routes</li></a>
 						<li class="selectedTab">Schedules</li>
-						<li><a href="map.html">Maps</a></li>
-						<li>Bus Stops</li>
+						<a href="map.html"><li>Maps</li></a>
+						<a href="stops.html"><li>Bus Stops</li></a>
 					</ul>
 				</div>
 			</div>
@@ -31,7 +34,7 @@
 				<h1 class="routeNumber">Choose a route:</h1>
 				<div id="mainControls">
 					<input type="button" name="flipRoute" id="flipRoute" value="Reverse Direction" onClick="flipRoute();">
-					<select id="routeList" name="routeList">
+					<select id="routeList" class="highlight" name="routeList">
 						<option value="selectRoute" disabled>Select A Route</option>
 					</select>
 				</div>
@@ -80,7 +83,15 @@
 			//Create dynamic elements of the page
 			window.onload = function fillRoutes() {
 				//Select the current day tab on load
+				var routeVariable = parseInt(window.location.search.substring(1));
 				var day = new Date().getDay();
+				var presentDate = new Date();
+				var newDate = (presentDate.getDate()).toString();
+				if (newDate.length < 2) {newDate = '0'+newDate;}
+				var newMonth = (presentDate.getMonth() +1).toString();
+				if (newMonth.length < 2) {newMonth = '0'+newMonth;}
+				var newYear = (presentDate.getFullYear()).toString();
+				specialServiceDate = newYear+newMonth+newDate;
 				if (day>0 && day<6) {
 					$('#Weekday').addClass('selectedDay');
 					service_id = 1;
@@ -106,20 +117,23 @@
 					option += '<option value="'+ routes[i].route_short_name + '" id="' + routes[i].route_id + '">' + routes[i].route_short_name + '</option>';
 				}
 				$('#routeList').append(option);
+				if (routeVariable) {
+					$('#routeList option[id="'+routeVariable+'"]').attr('selected', 'selected');
+					displaySelectedRoute(routeVariable, service_id, selectedDirection);
+					selectedRouteId = routeVariable;
+					selectedRoute = $('#routeList option[id="'+routeVariable+'"').attr('value');
+					// $('.routeNumber').empty();
+					// $('.routeNumber').append('Route ' + selectedRoute + ' to ' + trip_headsign);
+				}
 			}
 			//Change the header of the page based on the selected route from the drop down
 			$('#routeList').on('change', function() {
-				$('#busTable').empty();
 				selectedRoute = this.value;
 				selectedRouteId = $(this).children(":selected").attr("id");
-				$('.routeNumber').empty();
-				displaySelectedRoute(selectedRouteId, service_id, selectedDirection);
-				if (trip_headsign === -1) {
-					$('.routeNumber').append('There is no service for the specified route and time.');
-				} else {
-					$('.routeNumber').append('Route ' + selectedRoute + ' to ' + trip_headsign);
-				}
-				
+				displaySelectedRoute(selectedRouteId, service_id, selectedDirection);	
+			});
+			$('#routeList').on('click', function() {
+				$(this).removeClass('highlight');
 			});
 			$('#datepicker').on('change', function() {
 				//figure out what the day is and call thisDay(day)
@@ -138,7 +152,6 @@
 					endingOptions += '<option value="'+ availableStopsEnd[i].innerHTML + '" id="' + availableStopsEnd[i].id + '">' + availableStopsEnd[i].innerHTML + '</option>';
 				}
 				$('#stopListEnd').append(endingOptions);
-
 			});
 		</script>
 	</body>
